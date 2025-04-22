@@ -1,32 +1,34 @@
 # WSToast
 
-一个简洁优雅的SwiftUI Toast通知组件
+English | [简体中文](README_zh.md)
 
-## 功能特点
+A concise and elegant SwiftUI Toast notification component
 
-- 简单易用的API
-- 支持不同类型的Toast（成功、错误、警告、信息）
-- 自定义图标和显示时间
-- 使用最新的Observation框架和单例模式
-- 支持iOS 17+和macOS 14+
+## Features
 
-## 安装
+- Simple and easy-to-use API
+- Support for different Toast types (success, error, warning, info)
+- Customizable icons and display time
+- Uses the latest Observation framework and singleton pattern
+- Supports iOS 17+ and macOS 14+
+
+## Installation
 
 ### Swift Package Manager
 
-1. 在Xcode中，选择"File" > "Add Packages..."
-2. 输入本仓库的URL
-3. 选择版本规则并点击"Add Package"
+1. In Xcode, select "File" > "Add Packages..."
+2. Enter the URL of this repository
+3. Select version rules and click "Add Package"
 
-## 使用方法
+## Usage
 
-### 基本设置
+### Basic Setup
 
-在你的App入口添加WSToast修饰器，并使用`@_exported`导入包：
+Add the WSToast modifier to your App entry and use `@_exported` to import the package:
 
 ```swift
-// App主入口文件
-@_exported import WSToast  // 使用@_exported导入，避免在子组件中重复导入
+// App main entry file
+@_exported import WSToast  // Use @_exported to avoid reimporting in subcomponents
 import SwiftUI
 
 @main
@@ -34,23 +36,52 @@ struct MyApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
-                .wsToast() // 添加Toast支持
+                .wsToast() // Add Toast support
         }
     }
 }
 ```
 
-### 显示Toast
+### Using in Modal Views
 
-使用全局函数`showToast()`，可以在应用的任何地方调用：
+In `.sheet` or `.fullScreenCover` modal views, Toast cannot display properly. In this case, you need to add the `.wsToast()` modifier again to the modal content:
+
+```swift
+struct ContentView: View {
+    @State private var showSheet = false
+    
+    var body: some View {
+        Button("Show Modal") {
+            showSheet = true
+        }
+        .sheet(isPresented: $showSheet) {
+            ModalView()
+                .wsToast() // Must add wsToast modifier again in modal view
+        }
+        .wsToast() // Main view wsToast modifier
+    }
+}
+
+struct ModalView: View {
+    var body: some View {
+        Button("Show Toast in Modal") {
+            showToast(title: "Toast in Modal", type: .info)
+        }
+    }
+}
+```
+
+### Showing a Toast
+
+Use the global function `showToast()`, which can be called anywhere in your app:
 
 ```swift
 struct AnyView: View {
     var body: some View {
-        Button("显示Toast") {
+        Button("Show Toast") {
             showToast(
-                title: "操作成功",
-                subtitle: "数据已保存",
+                title: "Operation Successful",
+                subtitle: "Data has been saved",
                 type: .success
             )
         }
@@ -58,42 +89,42 @@ struct AnyView: View {
 }
 ```
 
-### 自定义Toast类型
+### Customizing Toast Types
 
 ```swift
-// 成功提示
+// Success notification
 showToast(
-    title: "上传成功",
+    title: "Upload Successful",
     type: .success
 )
 
-// 错误提示
+// Error notification
 showToast(
-    title: "连接失败",
-    subtitle: "请检查网络连接",
+    title: "Connection Failed",
+    subtitle: "Please check your network connection",
     type: .error
 )
 
-// 警告提示
+// Warning notification
 showToast(
-    title: "电量低",
+    title: "Low Battery",
     type: .warning
 )
 
-// 信息提示
+// Info notification
 showToast(
-    title: "有新消息",
+    title: "New Message",
     type: .info
 )
 
-// 自定义图标
+// Custom icon
 showToast(
-    title: "音乐已添加",
+    title: "Music Added",
     image: "music.note",
     type: .success
 )
 ```
 
-## 支持
+## Support
 
-如有任何问题或建议，请提交Issue。 
+If you have any questions or suggestions, please submit an Issue. 
