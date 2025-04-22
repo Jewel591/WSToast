@@ -13,15 +13,15 @@ let package = Package(
         // Products define the executables and libraries a package produces, making them visible to other packages.
         .library(
             name: "WSToast",
-            targets: ["Toast"]),
+            targets: ["WSToast"]),
     ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
         .target(
-            name: "Toast",
+            name: "WSToast",
             dependencies: []),
         .testTarget(
-            name: "ToastTests",
-            dependencies: ["Toast"]),
+            name: "WSToastTests",
+            dependencies: ["WSToast"]),
     ]
 )

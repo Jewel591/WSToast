@@ -1,10 +1,15 @@
+import Observation
 import SwiftUI
-import Combine
 
-public final class ToastManager: ObservableObject {
-    @Published @MainActor public var toast: Toast?
-    
-    public init() {}
+@Observable
+public final class ToastManager {
+    // 单例实例
+    public static let shared = ToastManager()
+
+    @MainActor public var toast: Toast?
+
+    // 私有初始化方法确保只有一个实例
+    private init() {}
 
     @MainActor
     public func show(
@@ -12,10 +17,10 @@ public final class ToastManager: ObservableObject {
         subtitle: String? = nil,
         type: ToastType = .success,
         showIcon: Bool = true,
-        duration: TimeInterval = 2.0
+        duration: TimeInterval = 3.0
     ) {
         // 使用动画显示 toast
-        withAnimation(.spring(response: 0.3, dampingFraction: 0.6)) {
+        withAnimation(.spring) {
             toast = Toast(
                 title: title,
                 subtitle: subtitle,

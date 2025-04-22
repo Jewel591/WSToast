@@ -1,5 +1,5 @@
 import XCTest
-@testable import Toast
+@testable import WSToast
 
 final class ToastTests: XCTestCase {
     func testToastCreation() {
@@ -32,14 +32,13 @@ final class ToastTests: XCTestCase {
         XCTAssertNotEqual(toast1, toast3)
     }
     
+    @MainActor
     func testToastManager() async {
         let manager = ToastManager()
         
         XCTAssertNil(manager.toast)
         
-        await MainActor.run {
-            manager.show(title: "测试Toast")
-        }
+        manager.show(title: "测试Toast")
         
         XCTAssertNotNil(manager.toast)
         XCTAssertEqual(manager.toast?.title, "测试Toast")
