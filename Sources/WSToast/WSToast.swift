@@ -38,7 +38,8 @@ public func showToast(
     title: String,
     subtitle: String? = nil,
     type: ToastType = .success,
-    showIcon: Bool = false,
+    role: ToastRole? = nil,
+    showIcon: Bool = true,
     duration: TimeInterval = 3.0
 ) {
     // 创建异步任务在主线程上执行
@@ -47,6 +48,7 @@ public func showToast(
             title: title,
             subtitle: subtitle,
             type: type,
+            role: role,
             showIcon: showIcon,
             duration: duration
         )

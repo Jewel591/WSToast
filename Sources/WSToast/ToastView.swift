@@ -16,13 +16,19 @@ public struct ToastView: View {
                         .resizable()
                         .scaledToFit()
                         .frame(width: 28, height: 28)
-                        .foregroundColor(toast.type.iconColor)
+                        // .foregroundColor(toast.type.iconColor)
+                } else if let role = toast.role {
+                    Image(systemName: role.iconName)
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 28, height: 28)
+                        // .foregroundColor(role.iconColor)
                 } else {
                     Image(systemName: toast.type.iconName)
                         .resizable()
                         .scaledToFit()
                         .frame(width: 28, height: 28)
-                        .foregroundColor(toast.type.iconColor)
+                        // .foregroundColor(toast.type.iconColor)
                 }
             }
 

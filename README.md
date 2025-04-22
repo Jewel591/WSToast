@@ -2,15 +2,17 @@
 
 English | [简体中文](README_zh.md)
 
-A concise and elegant SwiftUI Toast notification component
+A lightweight SwiftUI toast notification component that adheres to Apple's native design guidelines.
+
 
 ## Features
 
 - Simple and easy-to-use API
 - Support for different Toast types (success, error, warning, info)
 - Customizable icons and display time
-- Uses the latest Observation framework and singleton pattern
 - Supports iOS 17+ and macOS 14+
+- Developed with pure SwiftUI, supporting cross-platform
+- Simple to use, no need for many customization options
 
 ## Installation
 
@@ -42,35 +44,6 @@ struct MyApp: App {
 }
 ```
 
-### Using in Modal Views
-
-In `.sheet` or `.fullScreenCover` modal views, Toast cannot display properly. In this case, you need to add the `.wsToast()` modifier again to the modal content:
-
-```swift
-struct ContentView: View {
-    @State private var showSheet = false
-    
-    var body: some View {
-        Button("Show Modal") {
-            showSheet = true
-        }
-        .sheet(isPresented: $showSheet) {
-            ModalView()
-                .wsToast() // Must add wsToast modifier again in modal view
-        }
-        .wsToast() // Main view wsToast modifier
-    }
-}
-
-struct ModalView: View {
-    var body: some View {
-        Button("Show Toast in Modal") {
-            showToast(title: "Toast in Modal", type: .info)
-        }
-    }
-}
-```
-
 ### Showing a Toast
 
 Use the global function `showToast()`, which can be called anywhere in your app:
@@ -85,6 +58,40 @@ struct AnyView: View {
                 type: .success
             )
         }
+    }
+}
+```
+
+### Using in Modal Views
+
+When using a component that displays Toasts inside a modal view (like `.sheet` or `.fullScreenCover`), you need to add the `.wsToast()` modifier to that component:
+
+```swift
+// Component A that displays Component B in a modal
+struct ComponentA: View {
+    @State private var showModal = false
+    
+    var body: some View {
+        Button("Show Modal") {
+            showModal = true
+        }
+        .sheet(isPresented: $showModal) {
+            ComponentB() // ComponentB already has .wsToast() applied
+        }
+        .wsToast() // For toasts in ComponentA
+    }
+}
+
+// Component B that shows toasts inside a modal
+struct ComponentB: View {
+    var body: some View {
+        VStack {
+            Text("Modal Content")
+            Button("Show Toast in Modal") {
+                showToast(title: "Toast in Modal", type: .info)
+            }
+        }
+        .wsToast() // Required to show toasts in this modal component
     }
 }
 ```
@@ -123,6 +130,34 @@ showToast(
     image: "music.note",
     type: .success
 )
+```
+
+### Using Predefined Roles
+
+You can use the `role` parameter to display toasts with predefined icons for common Apple devices and actions. When a role is specified, it takes precedence over the `type` parameter for icon selection.
+
+```swift
+// Using a role for AirPods
+showToast(
+    title: "AirPods Connected",
+    role: .airpods
+)
+
+// Using a role for Apple Watch
+showToast(
+    title: "Apple Watch Synced",
+    role: .appleWatch
+)
+
+// Using a role for download
+showToast(
+    title: "Download Complete",
+    role: .download
+)
+
+// Available roles include:
+// .download, .search, .airpods, .appleWatch, .printer,
+// .homePod, .bad, .appleTv, .airPodMax, .safari
 ```
 
 ## Support

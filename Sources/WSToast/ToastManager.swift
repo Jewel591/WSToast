@@ -16,6 +16,7 @@ public final class ToastManager {
         title: String,
         subtitle: String? = nil,
         type: ToastType = .success,
+        role: ToastRole? = nil,
         showIcon: Bool = true,
         duration: TimeInterval = 3.0
     ) {
@@ -24,7 +25,9 @@ public final class ToastManager {
             toast = Toast(
                 title: title,
                 subtitle: subtitle,
+                image: nil,
                 type: type,
+                role: role,
                 showIcon: showIcon,
                 duration: duration
             )
